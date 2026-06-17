@@ -19,8 +19,8 @@ export default function GlassCard({
   borderStyle = 'normal',
   style,
   intensity = 80,
-  fillColor = 'rgba(12, 10, 28, 0.35)',
-  hazeColor = 'rgba(255, 255, 255, 0.04)',
+  fillColor = 'rgba(10, 8, 24, 0.48)',
+  hazeColor = 'rgba(255, 255, 255, 0.028)',
 }: GlassCardProps) {
   const borderColor = borderStyle === 'gold' 
     ? 'rgba(230, 201, 120, 0.30)' 
@@ -31,7 +31,7 @@ export default function GlassCard({
       {/* Container with subtle rim border */}
       <View style={[styles.borderContainer, { borderRadius: radius, borderColor }]}>
         
-        {/* Backdrop blur layer — lets atmosphere bleed through */}
+        {/* Backdrop blur is support; depth comes from dark fill and ambient light. */}
         <BlurView intensity={intensity} tint="dark" style={[StyleSheet.absoluteFill, { borderRadius: radius }]} />
         
         {/* Semi-transparent smoked fill — NOT opaque */}
@@ -42,7 +42,7 @@ export default function GlassCard({
         
         {/* Top-left corner luminosity */}
         <LinearGradient
-          colors={['rgba(255, 255, 255, 0.08)', 'transparent']}
+          colors={['rgba(255, 255, 255, 0.065)', 'transparent']}
           start={{ x: 0, y: 0 }}
           end={{ x: 0.5, y: 0.5 }}
           style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
@@ -50,7 +50,7 @@ export default function GlassCard({
 
         {/* Gold edge bloom from ambient light */}
         <LinearGradient
-          colors={['rgba(255, 233, 160, 0.05)', 'transparent']}
+          colors={['rgba(255, 233, 160, 0.06)', 'transparent']}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 0.6 }}
           style={[StyleSheet.absoluteFill, { borderRadius: radius }]}

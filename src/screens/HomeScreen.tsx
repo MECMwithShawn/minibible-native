@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,19 +6,43 @@ import {
   ScrollView,
   Pressable,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SPACING, TYPOGRAPHY, SHADOWS } from '../theme';
 import GlassCard from '../components/GlassCard';
 import { getDailyVerse } from '../data/daily';
+import { search, SearchResult } from '../data/search';
 import { useLibrary } from '../store/library';
+import { useSearchHistory } from '../store/searchHistory';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function HomeScreen() {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const daily = useMemo(() => getDailyVerse(), []);
   const lastRead = useLibrary((s) => s.lastRead);
+  const recordRead = useLibrary((s) => s.recordRead);
+  const recentSearches = useSearchHistory((s) => s.recents);
+  const addSearch = useSearchHistory((s) => s.add);
+  const searchResults = useMemo(
+    () => (searchQuery.trim().length > 1 ? search(searchQuery, { limit: 4 }) : []),
+    [searchQuery],
+  );
+
+  const submitSearch = () => {
+    addSearch(searchQuery);
+  };
+
+  const selectSearchResult = (result: SearchResult) => {
+    addSearch(searchQuery);
+    recordRead(result.book, result.chapter);
+    setSearchOpen(false);
+    setSearchQuery('');
+  };
 
   return (
     <View style={styles.container}>
@@ -38,29 +62,98 @@ export default function HomeScreen() {
               
               <Text style={styles.headerTitle}>Mini Bible</Text>
               
-              <Pressable style={styles.searchButton}>
-                <MaterialCommunityIcons name="magnify" size={22} color={COLORS.goldMedium} />
+              <Pressable style={styles.searchButton} onPress={() => setSearchOpen((open) => !open)}>
+                <MaterialCommunityIcons name={searchOpen ? 'close' : 'magnify'} size={22} color={COLORS.goldMedium} />
               </Pressable>
             </View>
           </SafeAreaView>
         </GlassCard>
         <View style={styles.headerDivider} />
+        {searchOpen && (
+          <GlassCard
+            radius={0}
+            intensity={82}
+            fillColor="rgba(8, 5, 20, 0.74)"
+            hazeColor="rgba(255, 255, 255, 0.018)"
+            style={styles.searchPanel}
+          >
+            <View style={styles.searchPanelContent}>
+              <View style={styles.searchInputRow}>
+                <MaterialCommunityIcons name="magnify" size={18} color={COLORS.goldMedium} />
+                <TextInput
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                  onSubmitEditing={submitSearch}
+                  placeholder="Search scripture, plans, or tools..."
+                  placeholderTextColor="rgba(244, 238, 223, 0.42)"
+                  returnKeyType="search"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  autoFocus
+                  style={styles.searchInput}
+                />
+                {searchQuery.length > 0 && (
+                  <Pressable onPress={() => setSearchQuery('')} style={styles.clearSearchButton}>
+                    <MaterialCommunityIcons name="close-circle" size={18} color="rgba(244, 238, 223, 0.46)" />
+                  </Pressable>
+                )}
+              </View>
+
+              {searchQuery.trim().length > 1 ? (
+                <View style={styles.searchResults}>
+                  {searchResults.length > 0 ? (
+                    searchResults.map((result) => (
+                      <Pressable key={result.id} style={styles.searchResultRow} onPress={() => selectSearchResult(result)}>
+                        <Text style={styles.searchResultRef}>{result.book} {result.chapter}:{result.verse}</Text>
+                        <Text style={styles.searchResultText} numberOfLines={2}>{result.text}</Text>
+                      </Pressable>
+                    ))
+                  ) : (
+                    <Text style={styles.searchEmpty}>No matches found</Text>
+                  )}
+                </View>
+              ) : recentSearches.length > 0 ? (
+                <View style={styles.recentSearches}>
+                  {recentSearches.slice(0, 3).map((recent) => (
+                    <Pressable key={recent} style={styles.recentSearchChip} onPress={() => setSearchQuery(recent)}>
+                      <Text style={styles.recentSearchText}>{recent}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+              ) : null}
+            </View>
+          </GlassCard>
+        )}
       </View>
 
       {/* Main Content Area */}
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[styles.scrollContent, searchOpen && styles.scrollContentSearchOpen]}
       >
         {/* 2. Daily Scripture Hero Card */}
         <View style={styles.heroWrapper}>
-          <GlassCard radius={22} style={styles.heroCard} intensity={90}>
+          <View pointerEvents="none" style={styles.heroAmbientGlow} />
+          <GlassCard
+            radius={22}
+            style={styles.heroCard}
+            intensity={76}
+            fillColor="rgba(10, 8, 24, 0.58)"
+            hazeColor="rgba(255, 255, 255, 0.025)"
+          >
             <View style={styles.heroContent}>
               <Text style={styles.heroLabel}>Daily Scripture</Text>
               
               {/* Inner Card Surface — deeper layer for depth separation */}
               <View style={styles.innerScripturePanel}>
+                <LinearGradient
+                  pointerEvents="none"
+                  colors={['rgba(230, 195, 106, 0.07)', 'rgba(120, 46, 255, 0.035)', 'transparent']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={StyleSheet.absoluteFill}
+                />
                 <Text style={styles.heroText}>
                   "{daily.text}"
                 </Text>
@@ -77,7 +170,14 @@ export default function HomeScreen() {
             <View pointerEvents="none" style={styles.readingOuterAura} />
             <View pointerEvents="none" style={styles.readingRimGlow} />
             <View pointerEvents="none" style={styles.readingWarmLift} />
-            <GlassCard radius={18} borderStyle="gold" style={styles.readingCard} intensity={85}>
+            <GlassCard
+              radius={18}
+              borderStyle="gold"
+              style={styles.readingCard}
+              intensity={70}
+              fillColor="rgba(12, 10, 28, 0.68)"
+              hazeColor="rgba(255, 255, 255, 0.018)"
+            >
               <View style={styles.readingContent}>
                 <View style={styles.readingTextSection}>
                   <Text style={styles.readingBook}>{lastRead ? `${lastRead.book} ${lastRead.chapter}` : 'Psalm 23'}</Text>
@@ -91,7 +191,12 @@ export default function HomeScreen() {
               {/* Reading Progress Indicator */}
               <View style={styles.progressSection}>
                 <View style={styles.progressTrack}>
-                  <View style={styles.progressBar} />
+                  <LinearGradient
+                    colors={[COLORS.goldMedium, COLORS.goldLight]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.progressBar}
+                  />
                 </View>
                 <Text style={styles.progressPercent}>(65%)</Text>
               </View>
@@ -105,9 +210,11 @@ export default function HomeScreen() {
           <View style={styles.gridRow}>
             {/* Category Card: Read the Bible */}
             <Pressable style={styles.categoryCardWrapper}>
-              <GlassCard radius={16} style={styles.categoryCard} intensity={80}>
+              <GlassCard radius={16} style={styles.categoryCard} intensity={68}>
                 <View style={styles.categoryContent}>
-                  <MaterialCommunityIcons name="cross" size={26} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <View style={styles.categoryIconWell}>
+                    <MaterialCommunityIcons name="cross" size={25} color={COLORS.goldLight} style={styles.categoryIcon} />
+                  </View>
                   <View style={styles.categoryTextWrapper}>
                     <Text style={styles.categoryTitle}>Read the Bible</Text>
                     <Text style={styles.categorySub1}>Genesis 1</Text>
@@ -119,9 +226,11 @@ export default function HomeScreen() {
 
             {/* Category Card: Devotionals */}
             <Pressable style={styles.categoryCardWrapper}>
-              <GlassCard radius={16} style={styles.categoryCard} intensity={80}>
+              <GlassCard radius={16} style={styles.categoryCard} intensity={68}>
                 <View style={styles.categoryContent}>
-                  <MaterialCommunityIcons name="book-cross" size={26} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <View style={styles.categoryIconWell}>
+                    <MaterialCommunityIcons name="book-cross" size={25} color={COLORS.goldLight} style={styles.categoryIcon} />
+                  </View>
                   <View style={styles.categoryTextWrapper}>
                     <Text style={styles.categoryTitle}>Devotionals</Text>
                     <Text style={styles.categorySub1}>Grace & Faith</Text>
@@ -134,9 +243,11 @@ export default function HomeScreen() {
           <View style={styles.gridRow}>
             {/* Category Card: Study Tools */}
             <Pressable style={styles.categoryCardWrapper}>
-              <GlassCard radius={16} style={styles.categoryCard} intensity={80}>
+              <GlassCard radius={16} style={styles.categoryCard} intensity={68}>
                 <View style={styles.categoryContent}>
-                  <MaterialCommunityIcons name="lightbulb-on-outline" size={26} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <View style={styles.categoryIconWell}>
+                    <MaterialCommunityIcons name="lightbulb-on-outline" size={25} color={COLORS.goldLight} style={styles.categoryIcon} />
+                  </View>
                   <View style={styles.categoryTextWrapper}>
                     <Text style={styles.categoryTitle}>Study Tools</Text>
                     <Text style={styles.categorySub1}>Commentaries</Text>
@@ -148,9 +259,11 @@ export default function HomeScreen() {
 
             {/* Category Card: Audio Bible */}
             <Pressable style={styles.categoryCardWrapper}>
-              <GlassCard radius={16} style={styles.categoryCard} intensity={80}>
+              <GlassCard radius={16} style={styles.categoryCard} intensity={68}>
                 <View style={styles.categoryContent}>
-                  <MaterialCommunityIcons name="headphones" size={26} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <View style={styles.categoryIconWell}>
+                    <MaterialCommunityIcons name="headphones" size={25} color={COLORS.goldLight} style={styles.categoryIcon} />
+                  </View>
                   <View style={styles.categoryTextWrapper}>
                     <Text style={styles.categoryTitle}>Audio Bible</Text>
                   </View>
@@ -163,7 +276,12 @@ export default function HomeScreen() {
 
       {/* 5. Premium Bottom Navigation */}
       <View style={styles.navWrapper}>
-        <View style={styles.navDivider} />
+        <LinearGradient
+          colors={['transparent', 'rgba(230, 201, 120, 0.42)', 'transparent']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.navDivider}
+        />
         <GlassCard radius={0} intensity={85} style={styles.navBar}>
           <SafeAreaView edges={['bottom']} style={styles.navSafeArea}>
             <View style={styles.tabItemActive}>
@@ -262,15 +380,118 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.10)',
   },
+  searchPanel: {
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(230, 201, 120, 0.12)',
+    backgroundColor: 'rgba(8, 5, 20, 0.64)',
+  },
+  searchPanelContent: {
+    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.sm,
+    paddingBottom: SPACING.md,
+    gap: SPACING.sm,
+  },
+  searchInputRow: {
+    minHeight: 42,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(230, 201, 120, 0.22)',
+    backgroundColor: 'rgba(255, 255, 255, 0.045)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: SPACING.sm,
+  },
+  searchInput: {
+    flex: 1,
+    minHeight: 40,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 0,
+    color: COLORS.ivory,
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.sm,
+  },
+  clearSearchButton: {
+    width: 28,
+    height: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchResults: {
+    gap: SPACING.xs,
+  },
+  searchResultRow: {
+    minHeight: 54,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.055)',
+    backgroundColor: 'rgba(4, 3, 12, 0.38)',
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xs,
+  },
+  searchResultRef: {
+    color: COLORS.goldMedium,
+    fontFamily: TYPOGRAPHY.serif,
+    fontSize: TYPOGRAPHY.sizes.xs,
+    marginBottom: 2,
+  },
+  searchResultText: {
+    color: 'rgba(244, 238, 223, 0.78)',
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.xs,
+    lineHeight: 17,
+  },
+  searchEmpty: {
+    color: COLORS.mutedBeige,
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.sm,
+    paddingVertical: SPACING.xs,
+  },
+  recentSearches: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.xs,
+  },
+  recentSearchChip: {
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(230, 201, 120, 0.18)',
+    backgroundColor: 'rgba(230, 201, 120, 0.07)',
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 5,
+  },
+  recentSearchText: {
+    color: COLORS.goldLight,
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.xs,
+  },
   scrollContent: {
     paddingHorizontal: SPACING.lg,
     paddingTop: 80,
     paddingBottom: 100,
   },
+  scrollContentSearchOpen: {
+    paddingTop: 190,
+  },
   heroWrapper: {
     ...SHADOWS.cardFloat,
     marginBottom: SPACING.xs,
     borderRadius: 22,
+    position: 'relative',
+  },
+  heroAmbientGlow: {
+    position: 'absolute',
+    top: -14,
+    right: 8,
+    bottom: -10,
+    left: 8,
+    borderRadius: 28,
+    backgroundColor: 'rgba(120, 46, 255, 0.08)',
+    shadowColor: COLORS.amethyst,
+    shadowOpacity: 0.28,
+    shadowRadius: 34,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 8,
   },
   heroCard: {
     paddingHorizontal: SPACING.md,
@@ -281,7 +502,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   innerScripturePanel: {
-    backgroundColor: 'rgba(4, 3, 12, 0.50)',
+    backgroundColor: 'rgba(4, 3, 12, 0.62)',
     borderRadius: 14,
     padding: SPACING.xl,
     borderWidth: 1,
@@ -290,6 +511,7 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(255, 255, 255, 0.09)',
     width: '100%',
     alignItems: 'center',
+    overflow: 'hidden',
   },
   heroLabel: {
     fontFamily: TYPOGRAPHY.serif,
@@ -428,7 +650,7 @@ const styles = StyleSheet.create({
   progressTrack: {
     flex: 1,
     height: 4,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.46)',
     borderRadius: 2,
     marginRight: SPACING.sm,
     overflow: 'hidden',
@@ -464,11 +686,21 @@ const styles = StyleSheet.create({
     padding: 14,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    minHeight: 90,
+    minHeight: 96,
+  },
+  categoryIconWell: {
+    width: 35,
+    height: 35,
+    borderRadius: 10,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(230, 201, 120, 0.10)',
+    borderWidth: 1,
+    borderColor: 'rgba(230, 201, 120, 0.16)',
+    ...SHADOWS.iconGlow,
   },
   categoryIcon: {
-    marginRight: 10,
-    marginTop: 2,
     ...SHADOWS.iconGlow,
   },
   categoryTextWrapper: {
