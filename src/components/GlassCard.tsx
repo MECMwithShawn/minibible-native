@@ -18,42 +18,41 @@ export default function GlassCard({
   style,
   intensity = 80,
 }: GlassCardProps) {
-  // Softer rim lighting, less contrast
   const borderColor = borderStyle === 'gold' 
     ? 'rgba(230, 201, 120, 0.30)' 
-    : 'rgba(255, 233, 160, 0.18)';
+    : 'rgba(255, 233, 160, 0.14)';
 
   return (
     <View style={[styles.outerContainer, { borderRadius: radius }, style]}>
-      {/* Container with softer gold rim border */}
+      {/* Container with subtle rim border */}
       <View style={[styles.borderContainer, { borderRadius: radius, borderColor }]}>
         
-        {/* Backdrop layer */}
+        {/* Backdrop blur layer — lets atmosphere bleed through */}
         <BlurView intensity={intensity} tint="dark" style={[StyleSheet.absoluteFill, { borderRadius: radius }]} />
         
-        {/* Semi-transparent background fill (Dark surface) */}
+        {/* Semi-transparent smoked fill — NOT opaque */}
         <View style={[StyleSheet.absoluteFill, styles.cardFill, { borderRadius: radius }]} />
         
-        {/* 3% internal white haze */}
+        {/* Internal white haze — frosted look */}
         <View style={[StyleSheet.absoluteFill, styles.innerHaze, { borderRadius: radius }]} />
         
-        {/* 6% White Top/Corner Highlight (Subtle corner luminosity) */}
+        {/* Top-left corner luminosity */}
         <LinearGradient
-          colors={['rgba(255, 255, 255, 0.06)', 'transparent']}
+          colors={['rgba(255, 255, 255, 0.08)', 'transparent']}
           start={{ x: 0, y: 0 }}
-          end={{ x: 0.4, y: 0.4 }}
+          end={{ x: 0.5, y: 0.5 }}
           style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
         />
 
-        {/* 4% Gold Edge Bloom (Warm environmental light bleeding down the surface) */}
+        {/* Gold edge bloom from ambient light */}
         <LinearGradient
-          colors={['rgba(255, 233, 160, 0.04)', 'transparent']}
+          colors={['rgba(255, 233, 160, 0.05)', 'transparent']}
           start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.7 }}
+          end={{ x: 0, y: 0.6 }}
           style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
         />
         
-        {/* Edge Refraction Highlight (Reduced visibility by 15%) */}
+        {/* Edge refraction highlight */}
         <View style={[StyleSheet.absoluteFill, styles.edgeRefraction, { borderRadius: radius }]} />
         
         {/* Card content */}
@@ -69,25 +68,25 @@ const styles = StyleSheet.create({
   outerContainer: {
     backgroundColor: 'transparent',
     shadowColor: '#000000',
-    shadowOpacity: 0.52,
-    shadowRadius: 35,
-    shadowOffset: { width: 0, height: 25 },
-    elevation: 25,
+    shadowOpacity: 0.5,
+    shadowRadius: 30,
+    shadowOffset: { width: 0, height: 20 },
+    elevation: 20,
   },
   borderContainer: {
     overflow: 'hidden',
   },
   cardFill: {
-    backgroundColor: 'rgba(15, 15, 25, 0.15)', // Maintain deep transparency
+    backgroundColor: 'rgba(12, 10, 28, 0.35)', // Smoked purple tint — translucent, not opaque
   },
   innerHaze: {
-    backgroundColor: 'rgba(255, 255, 255, 0.03)', // Exactly 3% white haze
+    backgroundColor: 'rgba(255, 255, 255, 0.04)', // Subtle frosted haze
   },
   edgeRefraction: {
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.04)', // Reduced rim opacity
+    borderColor: 'rgba(255, 255, 255, 0.06)',
     borderTopWidth: 1.5,
-    borderTopColor: 'rgba(255, 255, 255, 0.18)', // Subdued top highlight
+    borderTopColor: 'rgba(255, 255, 255, 0.15)',
     borderBottomWidth: 1.5,
     borderBottomColor: 'transparent',
   },

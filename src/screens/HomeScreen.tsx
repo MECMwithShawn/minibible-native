@@ -25,7 +25,7 @@ export default function HomeScreen() {
       {/* 1. Glass Header */}
       <View style={styles.headerWrapper}>
         <View style={styles.headerGlow} />
-        <GlassCard radius={0} intensity={65} style={styles.headerCard}>
+        <GlassCard radius={0} intensity={95} style={styles.headerCard}>
           <SafeAreaView edges={['top']}>
             <View style={styles.headerContent}>
               <View style={styles.headerSpacer} />
@@ -33,7 +33,7 @@ export default function HomeScreen() {
               <Text style={styles.headerTitle}>Mini Bible</Text>
               
               <Pressable style={styles.searchButton}>
-                <MaterialCommunityIcons name="magnify" size={24} color={COLORS.goldMedium} />
+                <MaterialCommunityIcons name="magnify" size={22} color={COLORS.goldMedium} />
               </Pressable>
             </View>
           </SafeAreaView>
@@ -48,16 +48,16 @@ export default function HomeScreen() {
       >
         {/* 2. Daily Scripture Hero Card */}
         <View style={styles.heroWrapper}>
-          <GlassCard radius={24} style={styles.heroCard} intensity={85}>
+          <GlassCard radius={22} style={styles.heroCard} intensity={90}>
             <View style={styles.heroContent}>
               <Text style={styles.heroLabel}>Daily Scripture</Text>
               
-              {/* Distinct Inner Card Surface for maximum depth separation */}
+              {/* Inner Card Surface — deeper layer for depth separation */}
               <View style={styles.innerScripturePanel}>
                 <Text style={styles.heroText}>
                   "{daily.text}"
                 </Text>
-                <Text style={styles.heroReference}>{daily.ref}</Text>
+                <Text style={styles.heroReference}>({daily.ref})</Text>
               </View>
             </View>
           </GlassCard>
@@ -67,14 +67,14 @@ export default function HomeScreen() {
         <Text style={styles.sectionHeader}>Continue Reading</Text>
         <View style={[styles.sectionWrapper, { zIndex: 10 }]}>
           <View style={styles.heroGlowWrapper}>
-            <GlassCard radius={20} borderStyle="gold" style={styles.readingCard} intensity={85}>
+            <GlassCard radius={18} borderStyle="gold" style={styles.readingCard} intensity={85}>
               <View style={styles.readingContent}>
                 <View style={styles.readingTextSection}>
                   <Text style={styles.readingBook}>{lastRead ? `${lastRead.book} ${lastRead.chapter}` : 'Psalm 23'}</Text>
                   <Text style={styles.readingChapter}>{lastRead ? 'Pick up where you left off' : 'The Lord is my Shepherd'}</Text>
                 </View>
                 <View style={styles.bookmarkWrapper}>
-                  <MaterialCommunityIcons name="bookmark" size={32} color={COLORS.goldMedium} style={styles.bookmarkIcon} />
+                  <MaterialCommunityIcons name="bookmark" size={30} color={COLORS.goldMedium} style={styles.bookmarkIcon} />
                 </View>
               </View>
               
@@ -90,14 +90,14 @@ export default function HomeScreen() {
         </View>
 
         {/* 4. Explore Categories Section */}
-        <Text style={styles.sectionHeader}>Explore Categories</Text>
+        <Text style={[styles.sectionHeader, styles.sectionHeaderLarge]}>Explore Categories</Text>
         <View style={[styles.categoryGrid, styles.sectionWrapper]}>
           <View style={styles.gridRow}>
             {/* Category Card: Read the Bible */}
             <Pressable style={styles.categoryCardWrapper}>
-              <GlassCard radius={18} style={styles.categoryCard} intensity={85}>
+              <GlassCard radius={16} style={styles.categoryCard} intensity={80}>
                 <View style={styles.categoryContent}>
-                  <MaterialCommunityIcons name="cross" size={28} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <MaterialCommunityIcons name="cross" size={26} color={COLORS.goldMedium} style={styles.categoryIcon} />
                   <View style={styles.categoryTextWrapper}>
                     <Text style={styles.categoryTitle}>Read the Bible</Text>
                     <Text style={styles.categorySub1}>Genesis 1</Text>
@@ -109,9 +109,9 @@ export default function HomeScreen() {
 
             {/* Category Card: Devotionals */}
             <Pressable style={styles.categoryCardWrapper}>
-              <GlassCard radius={18} style={styles.categoryCard} intensity={85}>
+              <GlassCard radius={16} style={styles.categoryCard} intensity={80}>
                 <View style={styles.categoryContent}>
-                  <MaterialCommunityIcons name="book-cross" size={28} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <MaterialCommunityIcons name="book-cross" size={26} color={COLORS.goldMedium} style={styles.categoryIcon} />
                   <View style={styles.categoryTextWrapper}>
                     <Text style={styles.categoryTitle}>Devotionals</Text>
                     <Text style={styles.categorySub1}>Grace & Faith</Text>
@@ -124,9 +124,9 @@ export default function HomeScreen() {
           <View style={styles.gridRow}>
             {/* Category Card: Study Tools */}
             <Pressable style={styles.categoryCardWrapper}>
-              <GlassCard radius={18} style={styles.categoryCard} intensity={85}>
+              <GlassCard radius={16} style={styles.categoryCard} intensity={80}>
                 <View style={styles.categoryContent}>
-                  <MaterialCommunityIcons name="lightbulb-on-outline" size={28} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <MaterialCommunityIcons name="lightbulb-on-outline" size={26} color={COLORS.goldMedium} style={styles.categoryIcon} />
                   <View style={styles.categoryTextWrapper}>
                     <Text style={styles.categoryTitle}>Study Tools</Text>
                     <Text style={styles.categorySub1}>Commentaries</Text>
@@ -138,9 +138,9 @@ export default function HomeScreen() {
 
             {/* Category Card: Audio Bible */}
             <Pressable style={styles.categoryCardWrapper}>
-              <GlassCard radius={18} style={styles.categoryCard} intensity={85}>
+              <GlassCard radius={16} style={styles.categoryCard} intensity={80}>
                 <View style={styles.categoryContent}>
-                  <MaterialCommunityIcons name="headphones" size={28} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <MaterialCommunityIcons name="headphones" size={26} color={COLORS.goldMedium} style={styles.categoryIcon} />
                   <View style={styles.categoryTextWrapper}>
                     <Text style={styles.categoryTitle}>Audio Bible</Text>
                   </View>
@@ -198,14 +198,14 @@ const styles = StyleSheet.create({
   headerCard: {
     borderWidth: 0,
     borderBottomWidth: 0,
-    backgroundColor: 'rgba(4, 6, 15, 0.25)',
+    backgroundColor: 'rgba(14, 10, 35, 0.40)',
   },
   headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md + 8,
+    paddingVertical: SPACING.md + 4,
   },
   headerSpacer: {
     width: 40,
@@ -220,14 +220,14 @@ const styles = StyleSheet.create({
     ...SHADOWS.textBloom,
   },
   searchButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(230, 201, 120, 0.12)',
+    backgroundColor: 'rgba(230, 201, 120, 0.10)',
     borderWidth: 1,
-    borderColor: 'rgba(230, 201, 120, 0.35)',
+    borderColor: 'rgba(230, 201, 120, 0.30)',
     ...SHADOWS.goldBloom,
   },
   headerGlow: {
@@ -237,59 +237,59 @@ const styles = StyleSheet.create({
     right: '10%',
     height: 100,
     borderRadius: 50,
-    backgroundColor: 'rgba(255, 233, 160, 0.05)',
+    backgroundColor: 'rgba(255, 233, 160, 0.04)',
     shadowColor: COLORS.goldLight,
-    shadowOpacity: 0.6,
+    shadowOpacity: 0.5,
     shadowRadius: 50,
     elevation: 10,
     zIndex: -1,
   },
   headerDivider: {
     height: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(255, 255, 255, 0.10)',
   },
   scrollContent: {
     paddingHorizontal: SPACING.lg,
-    paddingTop: 130,
-    paddingBottom: 140,
+    paddingTop: 80,
+    paddingBottom: 100,
   },
   heroWrapper: {
     ...SHADOWS.cardFloat,
-    marginBottom: SPACING.lg,
-    borderRadius: 24,
+    marginBottom: SPACING.xs,
+    borderRadius: 22,
   },
   heroCard: {
-    paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.xl + SPACING.lg,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.lg,
   },
   heroContent: {
-    padding: 26,
+    padding: SPACING.sm,
     alignItems: 'center',
   },
   innerScripturePanel: {
-    backgroundColor: 'rgba(2, 2, 5, 0.35)', // Deep translucent inner well
-    borderRadius: 16,
+    backgroundColor: 'rgba(4, 3, 12, 0.50)',
+    borderRadius: 14,
     padding: SPACING.xl,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.05)', // Extremely subtle rim highlight
-    borderTopWidth: 1.5,
-    borderTopColor: 'rgba(255, 255, 255, 0.12)', // Slightly stronger top highlight to catch the light
+    borderColor: 'rgba(255, 255, 255, 0.04)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.09)',
     width: '100%',
     alignItems: 'center',
   },
   heroLabel: {
-    fontFamily: TYPOGRAPHY.sans,
-    fontSize: TYPOGRAPHY.sizes.xs,
-    textTransform: 'uppercase',
-    color: COLORS.goldMedium,
-    letterSpacing: TYPOGRAPHY.letterSpacing.wider,
-    marginBottom: SPACING.lg,
+    fontFamily: TYPOGRAPHY.serif,
+    fontSize: TYPOGRAPHY.sizes.lg,
+    color: COLORS.ivory,
+    letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+    marginBottom: SPACING.md,
+    fontWeight: '300',
   },
   heroText: {
     fontFamily: TYPOGRAPHY.serif,
-    fontSize: 26,
+    fontSize: 22,
     color: COLORS.ivory,
-    lineHeight: 38,
+    lineHeight: 34,
     textAlign: 'center',
     marginBottom: SPACING.md,
     fontWeight: '300',
@@ -304,10 +304,15 @@ const styles = StyleSheet.create({
     fontFamily: TYPOGRAPHY.serif,
     fontSize: TYPOGRAPHY.sizes.lg,
     color: COLORS.ivory,
-    marginTop: SPACING.lg,
-    marginBottom: SPACING.sm,
+    marginTop: SPACING.xs,
+    marginBottom: SPACING.xs,
     letterSpacing: TYPOGRAPHY.letterSpacing.normal,
     fontWeight: '300',
+  },
+  sectionHeaderLarge: {
+    fontSize: TYPOGRAPHY.sizes.xl,
+    marginTop: SPACING.md,
+    marginBottom: SPACING.sm,
   },
   sectionWrapper: {
     position: 'relative',
@@ -315,12 +320,12 @@ const styles = StyleSheet.create({
   },
   heroGlowWrapper: {
     ...SHADOWS.heroGlow,
-    borderRadius: 20,
+    borderRadius: 18,
   },
   readingCard: {
   },
   readingContent: {
-    paddingTop: SPACING.md,
+    paddingTop: SPACING.sm,
     paddingHorizontal: SPACING.md,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -333,7 +338,7 @@ const styles = StyleSheet.create({
     fontFamily: TYPOGRAPHY.serif,
     fontSize: TYPOGRAPHY.sizes.xl,
     color: COLORS.ivory,
-    marginBottom: 4,
+    marginBottom: 3,
     fontWeight: '300',
   },
   readingChapter: {
@@ -351,8 +356,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: SPACING.md,
-    paddingBottom: SPACING.md,
-    marginTop: SPACING.md,
+    paddingBottom: SPACING.sm,
+    marginTop: SPACING.sm,
   },
   progressTrack: {
     flex: 1,
@@ -390,10 +395,10 @@ const styles = StyleSheet.create({
   categoryCard: {
   },
   categoryContent: {
-    padding: 16,
+    padding: 14,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    minHeight: 100,
+    minHeight: 90,
   },
   categoryIcon: {
     marginRight: 10,
@@ -408,7 +413,7 @@ const styles = StyleSheet.create({
     fontSize: TYPOGRAPHY.sizes.sm,
     fontWeight: '600',
     color: COLORS.ivory,
-    marginBottom: 4,
+    marginBottom: 3,
   },
   categorySub1: {
     fontFamily: TYPOGRAPHY.sans,
@@ -434,13 +439,13 @@ const styles = StyleSheet.create({
   },
   navBar: {
     borderWidth: 0,
-    backgroundColor: 'rgba(4, 6, 15, 0.85)',
+    backgroundColor: 'rgba(6, 5, 18, 0.88)',
   },
   navSafeArea: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 70,
+    height: 65,
     paddingHorizontal: SPACING.sm,
   },
   tabItem: {

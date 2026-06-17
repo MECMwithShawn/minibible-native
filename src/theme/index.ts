@@ -100,8 +100,8 @@ export const SHADOWS = {
   },
   heroGlow: {
     shadowColor: '#FFE599', // Bright, warm hero aura
-    shadowOpacity: 0.75, // Softer
-    shadowRadius: 85, // Much wider diffusion radius
+    shadowOpacity: 0.95, // Stronger
+    shadowRadius: 110, // Much wider diffusion radius
     shadowOffset: { width: 0, height: 0 },
     elevation: 35,
   },
