@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,10 +11,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, SPACING, TYPOGRAPHY, SHADOWS } from '../theme';
 import GlassCard from '../components/GlassCard';
+import { getDailyVerse } from '../data/daily';
+import { useLibrary } from '../store/library';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function HomeScreen() {
+  const daily = useMemo(() => getDailyVerse(), []);
+  const lastRead = useLibrary((s) => s.lastRead);
+
   return (
     <View style={styles.container}>
       {/* 1. Glass Header */}
@@ -50,9 +55,9 @@ export default function HomeScreen() {
               {/* Distinct Inner Card Surface for maximum depth separation */}
               <View style={styles.innerScripturePanel}>
                 <Text style={styles.heroText}>
-                  "The Lord is my shepherd; I shall not want. He makes me lie down in green pastures."
+                  "{daily.text}"
                 </Text>
-                <Text style={styles.heroReference}>Psalm 23:1-2</Text>
+                <Text style={styles.heroReference}>{daily.ref}</Text>
               </View>
             </View>
           </GlassCard>
@@ -65,8 +70,8 @@ export default function HomeScreen() {
             <GlassCard radius={20} borderStyle="gold" style={styles.readingCard} intensity={85}>
               <View style={styles.readingContent}>
                 <View style={styles.readingTextSection}>
-                  <Text style={styles.readingBook}>Psalm 23</Text>
-                  <Text style={styles.readingChapter}>The Lord is my Shepherd</Text>
+                  <Text style={styles.readingBook}>{lastRead ? `${lastRead.book} ${lastRead.chapter}` : 'Psalm 23'}</Text>
+                  <Text style={styles.readingChapter}>{lastRead ? 'Pick up where you left off' : 'The Lord is my Shepherd'}</Text>
                 </View>
                 <View style={styles.bookmarkWrapper}>
                   <MaterialCommunityIcons name="bookmark" size={32} color={COLORS.goldMedium} style={styles.bookmarkIcon} />
