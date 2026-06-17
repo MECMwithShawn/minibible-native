@@ -99,9 +99,9 @@ export const SHADOWS = {
     shadowOffset: { width: 0, height: 0 },
   },
   heroGlow: {
-    shadowColor: '#FFE599', // Bright, warm hero aura
-    shadowOpacity: 0.95, // Stronger
-    shadowRadius: 110, // Much wider diffusion radius
+    shadowColor: '#FFE599',
+    shadowOpacity: 0.88,
+    shadowRadius: 128, // +16% wider diffusion for perimeter wraparound
     shadowOffset: { width: 0, height: 0 },
     elevation: 35,
   },
