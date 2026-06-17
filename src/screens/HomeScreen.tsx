@@ -145,15 +145,8 @@ export default function HomeScreen() {
             <View style={styles.heroContent}>
               <Text style={styles.heroLabel}>Daily Scripture</Text>
               
-              {/* Inner Card Surface — deeper layer for depth separation */}
+              {/* Scripture content floats on the outer frosted surface. */}
               <View style={styles.innerScripturePanel}>
-                <LinearGradient
-                  pointerEvents="none"
-                  colors={['rgba(230, 195, 106, 0.07)', 'rgba(120, 46, 255, 0.035)', 'transparent']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={StyleSheet.absoluteFill}
-                />
                 <Text style={styles.heroText}>
                   "{daily.text}"
                 </Text>
@@ -494,40 +487,41 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   heroCard: {
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.lg,
+    minHeight: 318,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.xl,
   },
   heroContent: {
-    padding: SPACING.sm,
+    flex: 1,
+    paddingHorizontal: SPACING.xs,
     alignItems: 'center',
   },
   innerScripturePanel: {
-    backgroundColor: 'rgba(4, 3, 12, 0.62)',
-    borderRadius: 14,
-    padding: SPACING.xl,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.04)',
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.09)',
+    flex: 1,
+    backgroundColor: COLORS.transparent,
+    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.xl,
+    paddingBottom: SPACING.md,
     width: '100%',
     alignItems: 'center',
-    overflow: 'hidden',
+    justifyContent: 'center',
   },
   heroLabel: {
     fontFamily: TYPOGRAPHY.serif,
-    fontSize: TYPOGRAPHY.sizes.lg,
-    color: COLORS.ivory,
+    fontSize: TYPOGRAPHY.sizes.xl,
+    color: COLORS.goldLight,
     letterSpacing: TYPOGRAPHY.letterSpacing.wide,
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.sm,
     fontWeight: '300',
+    ...SHADOWS.textBloom,
   },
   heroText: {
     fontFamily: TYPOGRAPHY.serif,
-    fontSize: 22,
+    fontSize: 23,
     color: COLORS.ivory,
-    lineHeight: 34,
+    lineHeight: 36,
     textAlign: 'center',
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.lg,
     fontWeight: '300',
   },
   heroReference: {
