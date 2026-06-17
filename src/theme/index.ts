@@ -100,10 +100,10 @@ export const SHADOWS = {
   },
   heroGlow: {
     shadowColor: '#FFE599',
-    shadowOpacity: 0.88,
-    shadowRadius: 128, // +16% wider diffusion for perimeter wraparound
+    shadowOpacity: 0.38,
+    shadowRadius: 46,
     shadowOffset: { width: 0, height: 0 },
-    elevation: 35,
+    elevation: 18,
   },
   categoryAmbientGlow: {
     shadowColor: '#961C3C', // Deep ruby/magenta edge atmosphere

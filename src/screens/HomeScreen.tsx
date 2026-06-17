@@ -25,7 +25,13 @@ export default function HomeScreen() {
       {/* 1. Glass Header */}
       <View style={styles.headerWrapper}>
         <View style={styles.headerGlow} />
-        <GlassCard radius={0} intensity={95} style={styles.headerCard}>
+        <GlassCard
+          radius={0}
+          intensity={95}
+          fillColor="rgba(12, 10, 28, 0.20)"
+          hazeColor="rgba(255, 255, 255, 0.055)"
+          style={styles.headerCard}
+        >
           <SafeAreaView edges={['top']}>
             <View style={styles.headerContent}>
               <View style={styles.headerSpacer} />
@@ -43,6 +49,7 @@ export default function HomeScreen() {
 
       {/* Main Content Area */}
       <ScrollView
+        style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
@@ -67,6 +74,9 @@ export default function HomeScreen() {
         <Text style={styles.sectionHeader}>Continue Reading</Text>
         <View style={[styles.sectionWrapper, { zIndex: 10 }]}>
           <View style={styles.heroGlowWrapper}>
+            <View pointerEvents="none" style={styles.readingOuterAura} />
+            <View pointerEvents="none" style={styles.readingRimGlow} />
+            <View pointerEvents="none" style={styles.readingWarmLift} />
             <GlassCard radius={18} borderStyle="gold" style={styles.readingCard} intensity={85}>
               <View style={styles.readingContent}>
                 <View style={styles.readingTextSection}>
@@ -187,6 +197,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.transparent,
+    overflow: 'hidden',
+  },
+  scrollView: {
+    flex: 1,
   },
   headerWrapper: {
     position: 'absolute',
@@ -198,7 +212,7 @@ const styles = StyleSheet.create({
   headerCard: {
     borderWidth: 0,
     borderBottomWidth: 0,
-    backgroundColor: 'rgba(14, 10, 35, 0.40)',
+    backgroundColor: 'rgba(14, 10, 35, 0.26)',
   },
   headerContent: {
     flexDirection: 'row',
@@ -321,8 +335,60 @@ const styles = StyleSheet.create({
   heroGlowWrapper: {
     ...SHADOWS.heroGlow,
     borderRadius: 18,
+    position: 'relative',
   },
   readingCard: {
+    position: 'relative',
+    zIndex: 2,
+  },
+  readingOuterAura: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    bottom: -8,
+    left: -8,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 229, 153, 0.14)',
+    backgroundColor: 'rgba(255, 229, 153, 0.012)',
+    shadowColor: COLORS.goldLight,
+    shadowOpacity: 0.34,
+    shadowRadius: 28,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 16,
+    zIndex: 0,
+  },
+  readingRimGlow: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    bottom: -2,
+    left: -2,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 233, 160, 0.26)',
+    backgroundColor: 'rgba(255, 233, 160, 0.008)',
+    shadowColor: COLORS.goldMedium,
+    shadowOpacity: 0.42,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 18,
+    zIndex: 1,
+  },
+  readingWarmLift: {
+    position: 'absolute',
+    right: -20,
+    bottom: -16,
+    width: 140,
+    height: 58,
+    borderRadius: 70,
+    backgroundColor: 'rgba(150, 28, 60, 0.08)',
+    shadowColor: COLORS.ruby,
+    shadowOpacity: 0.28,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 8,
+    zIndex: 0,
   },
   readingContent: {
     paddingTop: SPACING.sm,

@@ -9,6 +9,8 @@ interface GlassCardProps {
   borderStyle?: 'normal' | 'gold';
   style?: ViewStyle;
   intensity?: number;
+  fillColor?: string;
+  hazeColor?: string;
 }
 
 export default function GlassCard({
@@ -17,6 +19,8 @@ export default function GlassCard({
   borderStyle = 'normal',
   style,
   intensity = 80,
+  fillColor = 'rgba(12, 10, 28, 0.35)',
+  hazeColor = 'rgba(255, 255, 255, 0.04)',
 }: GlassCardProps) {
   const borderColor = borderStyle === 'gold' 
     ? 'rgba(230, 201, 120, 0.30)' 
@@ -31,10 +35,10 @@ export default function GlassCard({
         <BlurView intensity={intensity} tint="dark" style={[StyleSheet.absoluteFill, { borderRadius: radius }]} />
         
         {/* Semi-transparent smoked fill — NOT opaque */}
-        <View style={[StyleSheet.absoluteFill, styles.cardFill, { borderRadius: radius }]} />
+        <View style={[StyleSheet.absoluteFill, { borderRadius: radius, backgroundColor: fillColor }]} />
         
         {/* Internal white haze — frosted look */}
-        <View style={[StyleSheet.absoluteFill, styles.innerHaze, { borderRadius: radius }]} />
+        <View style={[StyleSheet.absoluteFill, { borderRadius: radius, backgroundColor: hazeColor }]} />
         
         {/* Top-left corner luminosity */}
         <LinearGradient
@@ -75,12 +79,6 @@ const styles = StyleSheet.create({
   },
   borderContainer: {
     overflow: 'hidden',
-  },
-  cardFill: {
-    backgroundColor: 'rgba(12, 10, 28, 0.35)', // Smoked purple tint — translucent, not opaque
-  },
-  innerHaze: {
-    backgroundColor: 'rgba(255, 255, 255, 0.04)', // Subtle frosted haze
   },
   edgeRefraction: {
     borderWidth: 1,
