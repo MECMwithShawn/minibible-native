@@ -1,0 +1,464 @@
+import React from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  Dimensions,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { COLORS, SPACING, TYPOGRAPHY, SHADOWS } from '../theme';
+import GlassCard from '../components/GlassCard';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+export default function HomeScreen() {
+  return (
+    <View style={styles.container}>
+      {/* 1. Glass Header */}
+      <View style={styles.headerWrapper}>
+        <View style={styles.headerGlow} />
+        <GlassCard radius={0} intensity={65} style={styles.headerCard}>
+          <SafeAreaView edges={['top']}>
+            <View style={styles.headerContent}>
+              {/* Invisible spacer to perfectly center the logo */}
+              <View style={styles.headerSpacer} />
+              
+              <Text style={styles.headerTitle}>SACRED LIGHT</Text>
+              
+              <Pressable style={styles.searchButton}>
+                <MaterialCommunityIcons name="magnify" size={20} color={COLORS.goldMedium} />
+              </Pressable>
+            </View>
+          </SafeAreaView>
+        </GlassCard>
+        <View style={styles.headerDivider} />
+      </View>
+
+      {/* Main Content Area */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {/* 2. Daily Scripture Hero Card */}
+        <View style={styles.heroWrapper}>
+          <GlassCard radius={24} style={styles.heroCard} intensity={80}>
+            <View style={styles.heroContent}>
+              <Text style={styles.heroLabel}>Daily Scripture</Text>
+              <Text style={styles.heroText}>
+                “For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.”
+              </Text>
+              <Text style={styles.heroReference}>(Jeremiah 29:11)</Text>
+            </View>
+          </GlassCard>
+        </View>
+
+        {/* 3. Continue Reading Section */}
+        <Text style={styles.sectionHeader}>Continue Reading</Text>
+        <View style={styles.sectionWrapper}>
+          <View style={styles.heroGlowWrapper}>
+            <GlassCard radius={20} borderStyle="gold" style={styles.readingCard} intensity={80}>
+              <View style={styles.readingContent}>
+                <View style={styles.readingTextSection}>
+                  <Text style={styles.readingBook}>Psalm 23</Text>
+                  <Text style={styles.readingChapter}>The Lord is my Shepherd</Text>
+                </View>
+                <View style={styles.bookmarkWrapper}>
+                  <MaterialCommunityIcons name="bookmark" size={32} color={COLORS.goldMedium} style={styles.bookmarkIcon} />
+                </View>
+              </View>
+              
+              {/* Reading Progress Indicator */}
+              <View style={styles.progressSection}>
+                <View style={styles.progressTrack}>
+                  <View style={styles.progressBar} />
+                </View>
+                <Text style={styles.progressPercent}>(65%)</Text>
+              </View>
+            </GlassCard>
+          </View>
+        </View>
+
+        {/* 4. Explore Categories Section */}
+        <Text style={styles.sectionHeader}>Explore Categories</Text>
+        <View style={[styles.categoryGrid, styles.sectionWrapper]}>
+          <View style={styles.gridRow}>
+            {/* Category Card: Read the Bible */}
+            <Pressable style={styles.categoryCardWrapper}>
+              <GlassCard radius={18} style={styles.categoryCard} intensity={80}>
+                <View style={styles.categoryContent}>
+                  <MaterialCommunityIcons name="cross" size={28} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <View style={styles.categoryTextWrapper}>
+                    <Text style={styles.categoryTitle}>Read the Bible</Text>
+                    <Text style={styles.categorySub1}>Genesis 1</Text>
+                    <Text style={styles.categorySub2}>Old Testament</Text>
+                  </View>
+                </View>
+              </GlassCard>
+            </Pressable>
+
+            {/* Category Card: Devotionals */}
+            <Pressable style={styles.categoryCardWrapper}>
+              <GlassCard radius={18} style={styles.categoryCard} intensity={80}>
+                <View style={styles.categoryContent}>
+                  <MaterialCommunityIcons name="book-cross" size={28} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <View style={styles.categoryTextWrapper}>
+                    <Text style={styles.categoryTitle}>Devotionals</Text>
+                    <Text style={styles.categorySub1}>Grace & Faith</Text>
+                  </View>
+                </View>
+              </GlassCard>
+            </Pressable>
+          </View>
+
+          <View style={styles.gridRow}>
+            {/* Category Card: Study Tools */}
+            <Pressable style={styles.categoryCardWrapper}>
+              <GlassCard radius={18} style={styles.categoryCard} intensity={80}>
+                <View style={styles.categoryContent}>
+                  <MaterialCommunityIcons name="lightbulb-on-outline" size={28} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <View style={styles.categoryTextWrapper}>
+                    <Text style={styles.categoryTitle}>Study Tools</Text>
+                    <Text style={styles.categorySub1}>Commentaries</Text>
+                    <Text style={styles.categorySub2}>Concordance</Text>
+                  </View>
+                </View>
+              </GlassCard>
+            </Pressable>
+
+            {/* Category Card: Audio Bible */}
+            <Pressable style={styles.categoryCardWrapper}>
+              <GlassCard radius={18} style={styles.categoryCard} intensity={80}>
+                <View style={styles.categoryContent}>
+                  <MaterialCommunityIcons name="headphones" size={28} color={COLORS.goldMedium} style={styles.categoryIcon} />
+                  <View style={styles.categoryTextWrapper}>
+                    <Text style={styles.categoryTitle}>Audio Bible</Text>
+                  </View>
+                </View>
+              </GlassCard>
+            </Pressable>
+          </View>
+        </View>
+      </ScrollView>
+
+      {/* 5. Premium Bottom Navigation */}
+      <View style={styles.navWrapper}>
+        <View style={styles.navDivider} />
+        <GlassCard radius={0} intensity={80} style={styles.navBar}>
+          <SafeAreaView edges={['bottom']} style={styles.navSafeArea}>
+            <View style={styles.tabItemActive}>
+              <View style={styles.tabGlow} />
+              <MaterialCommunityIcons name="cross" size={24} color={COLORS.goldLight} style={styles.activeIconGlow} />
+              <Text style={styles.tabLabelActive}>Home</Text>
+            </View>
+
+            <View style={styles.tabItem}>
+              <MaterialCommunityIcons name="book-open-page-variant-outline" size={24} color="rgba(255,255,255,0.55)" />
+              <Text style={styles.tabLabel}>Bible</Text>
+            </View>
+
+            <View style={styles.tabItem}>
+              <MaterialCommunityIcons name="lightbulb-on-outline" size={24} color="rgba(255,255,255,0.55)" />
+              <Text style={styles.tabLabel}>Study</Text>
+            </View>
+
+            <View style={styles.tabItem}>
+              <MaterialCommunityIcons name="account-outline" size={24} color="rgba(255,255,255,0.55)" />
+              <Text style={styles.tabLabel}>Profile</Text>
+            </View>
+          </SafeAreaView>
+        </GlassCard>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.transparent,
+  },
+  headerWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+  },
+  headerCard: {
+    borderWidth: 0,
+    borderBottomWidth: 0,
+    backgroundColor: 'rgba(4, 6, 15, 0.4)',
+  },
+  headerContent: {
+    height: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: SPACING.lg,
+  },
+  headerSpacer: {
+    width: 40,
+  },
+  headerTitle: {
+    fontFamily: TYPOGRAPHY.serif,
+    fontSize: TYPOGRAPHY.sizes.xl,
+    color: COLORS.goldLight,
+    letterSpacing: TYPOGRAPHY.letterSpacing.widest,
+    fontWeight: '300',
+    textAlign: 'center',
+    ...SHADOWS.textBloom,
+  },
+  searchButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(230, 201, 120, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(230, 201, 120, 0.35)',
+    ...SHADOWS.goldBloom,
+  },
+  headerGlow: {
+    position: 'absolute',
+    top: -50,
+    left: '10%',
+    right: '10%',
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: 'rgba(255, 233, 160, 0.05)',
+    shadowColor: COLORS.goldLight,
+    shadowOpacity: 0.6,
+    shadowRadius: 50,
+    elevation: 10,
+    zIndex: -1,
+  },
+  headerDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+  },
+  scrollContent: {
+    paddingHorizontal: SPACING.lg,
+    paddingTop: 130,
+    paddingBottom: 140,
+  },
+  heroWrapper: {
+    ...SHADOWS.cardFloat,
+    marginBottom: SPACING.lg,
+    borderRadius: 24,
+  },
+  heroCard: {
+    backgroundColor: 'rgba(12, 16, 35, 0.45)',
+  },
+  heroContent: {
+    padding: 26,
+    alignItems: 'center',
+  },
+  heroLabel: {
+    fontFamily: TYPOGRAPHY.serif,
+    fontSize: TYPOGRAPHY.sizes.lg,
+    color: COLORS.goldMedium,
+    marginBottom: SPACING.sm,
+    fontWeight: '300',
+    letterSpacing: TYPOGRAPHY.letterSpacing.normal,
+  },
+  heroText: {
+    fontFamily: TYPOGRAPHY.serif,
+    fontSize: TYPOGRAPHY.sizes.md,
+    lineHeight: 28,
+    color: COLORS.ivory,
+    textAlign: 'center',
+    marginBottom: SPACING.md,
+    fontWeight: '300',
+  },
+  heroReference: {
+    fontFamily: TYPOGRAPHY.serif,
+    fontSize: TYPOGRAPHY.sizes.sm,
+    color: COLORS.goldMedium,
+    fontStyle: 'italic',
+  },
+  sectionHeader: {
+    fontFamily: TYPOGRAPHY.serif,
+    fontSize: TYPOGRAPHY.sizes.lg,
+    color: COLORS.ivory,
+    marginTop: SPACING.lg,
+    marginBottom: SPACING.sm,
+    letterSpacing: TYPOGRAPHY.letterSpacing.normal,
+    fontWeight: '300',
+  },
+  sectionWrapper: {
+    position: 'relative',
+    zIndex: 0,
+  },
+  heroGlowWrapper: {
+    ...SHADOWS.heroGlow,
+    borderRadius: 20,
+  },
+  readingCard: {
+    backgroundColor: 'rgba(14, 18, 38, 0.55)',
+  },
+  readingContent: {
+    paddingTop: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  readingTextSection: {
+    flex: 1,
+  },
+  readingBook: {
+    fontFamily: TYPOGRAPHY.serif,
+    fontSize: TYPOGRAPHY.sizes.xl,
+    color: COLORS.ivory,
+    marginBottom: 4,
+    fontWeight: '300',
+  },
+  readingChapter: {
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.sm,
+    color: COLORS.mutedBeige,
+  },
+  bookmarkWrapper: {
+    marginLeft: SPACING.md,
+  },
+  bookmarkIcon: {
+    ...SHADOWS.goldBloom,
+  },
+  progressSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: SPACING.md,
+    paddingBottom: SPACING.md,
+    marginTop: SPACING.md,
+  },
+  progressTrack: {
+    flex: 1,
+    height: 4,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    borderRadius: 2,
+    marginRight: SPACING.sm,
+    overflow: 'hidden',
+  },
+  progressBar: {
+    width: '65%',
+    height: '100%',
+    backgroundColor: COLORS.goldMedium,
+    borderRadius: 2,
+    ...SHADOWS.goldBloom,
+  },
+  progressPercent: {
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.xs,
+    color: COLORS.mutedBeige,
+  },
+  categoryGrid: {
+    marginTop: SPACING.xs,
+    gap: SPACING.sm,
+    ...SHADOWS.categoryAmbientGlow,
+  },
+  gridRow: {
+    flexDirection: 'row',
+    gap: SPACING.sm,
+  },
+  categoryCardWrapper: {
+    flex: 1,
+    ...SHADOWS.cardHover,
+  },
+  categoryCard: {
+    backgroundColor: 'rgba(12, 16, 35, 0.5)',
+  },
+  categoryContent: {
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    minHeight: 100,
+  },
+  categoryIcon: {
+    marginRight: 10,
+    marginTop: 2,
+    ...SHADOWS.iconGlow,
+  },
+  categoryTextWrapper: {
+    flex: 1,
+  },
+  categoryTitle: {
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.sm,
+    fontWeight: '600',
+    color: COLORS.ivory,
+    marginBottom: 4,
+  },
+  categorySub1: {
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.xs,
+    color: COLORS.goldMedium,
+    marginBottom: 2,
+  },
+  categorySub2: {
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.xs,
+    color: COLORS.mutedBeige,
+  },
+  navWrapper: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+  },
+  navDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  navBar: {
+    borderWidth: 0,
+    backgroundColor: 'rgba(4, 6, 15, 0.85)',
+  },
+  navSafeArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 70,
+    paddingHorizontal: SPACING.sm,
+  },
+  tabItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  tabItemActive: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    position: 'relative',
+  },
+  tabGlow: {
+    position: 'absolute',
+    top: -12,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(230, 201, 120, 0.08)',
+    ...SHADOWS.goldBloom,
+  },
+  activeIconGlow: {
+    ...SHADOWS.goldBloom,
+  },
+  tabLabel: {
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.xs - 1,
+    color: 'rgba(255,255,255,0.45)',
+    marginTop: 4,
+  },
+  tabLabelActive: {
+    fontFamily: TYPOGRAPHY.sans,
+    fontSize: TYPOGRAPHY.sizes.xs - 1,
+    color: COLORS.goldLight,
+    fontWeight: '500',
+    marginTop: 4,
+  },
+});
