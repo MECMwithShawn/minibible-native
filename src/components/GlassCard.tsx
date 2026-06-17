@@ -34,12 +34,11 @@ export default function GlassCard({
         {/* Semi-transparent background fill */}
         <View style={[StyleSheet.absoluteFill, styles.cardFill, { borderRadius: radius }]} />
         
-        {/* Continuous atmospheric diagonal wash (Seamless) */}
+        {/* Pure uniform atmospheric haze to avoid any linear banding or visible gradients */}
         <LinearGradient
-          colors={['rgba(255, 255, 255, 0.10)', 'rgba(15, 15, 25, 0.0)', 'rgba(0, 0, 0, 0.35)']}
-          locations={[0, 0.5, 1]}
+          colors={['rgba(255, 255, 255, 0.04)', 'transparent']}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
+          end={{ x: 0, y: 1 }}
           style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
         />
         
