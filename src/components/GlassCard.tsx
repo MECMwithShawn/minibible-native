@@ -31,16 +31,30 @@ export default function GlassCard({
         {/* Backdrop layer */}
         <BlurView intensity={intensity} tint="dark" style={[StyleSheet.absoluteFill, { borderRadius: radius }]} />
         
-        {/* Semi-transparent background fill */}
+        {/* Semi-transparent background fill (Dark surface) */}
         <View style={[StyleSheet.absoluteFill, styles.cardFill, { borderRadius: radius }]} />
         
-        {/* Pure uniform atmospheric haze to avoid any linear banding or visible gradients */}
+        {/* 3% internal white haze */}
+        <View style={[StyleSheet.absoluteFill, styles.innerHaze, { borderRadius: radius }]} />
+        
+        {/* 6% White Top/Corner Highlight (Subtle corner luminosity) */}
         <LinearGradient
-          colors={['rgba(255, 255, 255, 0.04)', 'transparent']}
+          colors={['rgba(255, 255, 255, 0.06)', 'transparent']}
           start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
+          end={{ x: 0.4, y: 0.4 }}
           style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
         />
+
+        {/* 4% Gold Edge Bloom (Warm environmental light bleeding down the surface) */}
+        <LinearGradient
+          colors={['rgba(255, 233, 160, 0.04)', 'transparent']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 0.7 }}
+          style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
+        />
+        
+        {/* Edge Refraction Highlight (Reduced visibility by 15%) */}
+        <View style={[StyleSheet.absoluteFill, styles.edgeRefraction, { borderRadius: radius }]} />
         
         {/* Card content */}
         <View style={styles.content}>
@@ -54,7 +68,6 @@ export default function GlassCard({
 const styles = StyleSheet.create({
   outerContainer: {
     backgroundColor: 'transparent',
-    // Reduced shadow opacity for a softer drop
     shadowColor: '#000000',
     shadowOpacity: 0.52,
     shadowRadius: 35,
@@ -62,13 +75,21 @@ const styles = StyleSheet.create({
     elevation: 25,
   },
   borderContainer: {
-    borderWidth: 1,
-    borderTopWidth: 1.2, // Softer top highlight rim
-    borderBottomWidth: 1.2, // Softer bottom shadow rim
     overflow: 'hidden',
   },
   cardFill: {
-    backgroundColor: 'rgba(15, 15, 25, 0.45)',
+    backgroundColor: 'rgba(15, 15, 25, 0.15)', // Maintain deep transparency
+  },
+  innerHaze: {
+    backgroundColor: 'rgba(255, 255, 255, 0.03)', // Exactly 3% white haze
+  },
+  edgeRefraction: {
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.04)', // Reduced rim opacity
+    borderTopWidth: 1.5,
+    borderTopColor: 'rgba(255, 255, 255, 0.18)', // Subdued top highlight
+    borderBottomWidth: 1.5,
+    borderBottomColor: 'transparent',
   },
   content: {
     position: 'relative',
