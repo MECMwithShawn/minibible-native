@@ -53,10 +53,10 @@ export default function GlassCard({
     ? hazeColor
     : `rgba(255, 255, 255, ${Math.min(0.018, Math.max(0.011, sourceHazeAlpha * 0.34)).toFixed(3)})`;
   const borderColor = borderStyle === 'gold'
-    ? 'rgba(255, 233, 160, 0.13)'
+    ? 'rgba(255, 233, 160, 0.12)'
     : isHeroGlass
-      ? 'rgba(255, 244, 210, 0.15)'
-      : 'rgba(255, 255, 255, 0.078)';
+      ? 'rgba(235, 228, 255, 0.13)'
+      : 'rgba(235, 228, 255, 0.072)';
 
   return (
     <View style={[styles.outerContainer, { borderRadius: radius }, glowStyle, style]}>
@@ -74,14 +74,14 @@ export default function GlassCard({
         
         {/* Diagonal glass refraction sheen */}
         <LinearGradient
-          colors={['rgba(255, 255, 255, 0.118)', 'rgba(255, 244, 220, 0.014)', 'transparent']}
+          colors={['rgba(238, 240, 255, 0.102)', 'rgba(179, 158, 255, 0.018)', 'transparent']}
           start={{ x: 0.05, y: 0.01 }}
           end={{ x: 0.76, y: 0.62 }}
           style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
         />
         
         <LinearGradient
-          colors={['rgba(255, 255, 255, 0.12)', 'rgba(255, 255, 255, 0.009)', 'transparent']}
+          colors={['rgba(255, 255, 255, 0.104)', 'rgba(202, 194, 255, 0.012)', 'transparent']}
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 0.95 }}
           style={[styles.topWash, { borderRadius: radius }]}
@@ -89,7 +89,7 @@ export default function GlassCard({
 
         {/* Warm edge light */}
         <LinearGradient
-          colors={['rgba(255, 233, 160, 0.068)', 'rgba(255, 233, 160, 0.006)', 'transparent']}
+          colors={['rgba(255, 233, 170, 0.052)', 'rgba(191, 176, 255, 0.010)', 'transparent']}
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 0.75 }}
           style={[StyleSheet.absoluteFill, { borderRadius: radius }]}
@@ -124,13 +124,13 @@ const styles = StyleSheet.create({
   },
   edgeRefraction: {
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.018)',
+    borderColor: 'rgba(235, 228, 255, 0.016)',
     borderTopWidth: 1.2,
-    borderTopColor: 'rgba(255, 255, 255, 0.44)',
+    borderTopColor: 'rgba(246, 245, 255, 0.36)',
     borderLeftWidth: 1,
-    borderLeftColor: 'rgba(255, 244, 210, 0.12)',
+    borderLeftColor: 'rgba(232, 224, 255, 0.10)',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 233, 160, 0.012)',
+    borderBottomColor: 'rgba(255, 233, 170, 0.010)',
   },
   topWash: {
     position: 'absolute',

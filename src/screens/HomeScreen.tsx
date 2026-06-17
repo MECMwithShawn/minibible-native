@@ -56,15 +56,15 @@ export default function HomeScreen() {
         <GlassCard
           radius={0}
           intensity={84}
-          fillColor="rgba(10, 8, 24, 0.12)"
-          hazeColor="rgba(255, 255, 255, 0.034)"
+          fillColor="rgba(8, 6, 24, 0.16)"
+          hazeColor="rgba(226, 230, 255, 0.030)"
           style={styles.headerCard}
         >
           <LinearGradient
             pointerEvents="none"
             colors={[
-              'rgba(255, 255, 255, 0.104)',
-              'rgba(255, 244, 210, 0.038)',
+              'rgba(226, 232, 255, 0.108)',
+              'rgba(118, 86, 174, 0.052)',
               'rgba(255, 255, 255, 0.000)',
             ]}
             start={{ x: 0.08, y: 0 }}
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
   headerCard: {
     borderWidth: 0,
     borderBottomWidth: 0,
-    backgroundColor: 'rgba(12, 10, 28, 0.11)',
+    backgroundColor: 'rgba(8, 7, 24, 0.16)',
   },
   headerSheen: {
     ...StyleSheet.absoluteFillObject,
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(230, 201, 120, 0.075)',
     borderWidth: 1,
-    borderColor: 'rgba(230, 201, 120, 0.24)',
+    borderColor: 'rgba(230, 218, 255, 0.22)',
     ...SHADOWS.goldBloom,
   },
   headerGlow: {
@@ -424,9 +424,9 @@ const styles = StyleSheet.create({
     right: '5%',
     height: 118,
     borderRadius: 60,
-    backgroundColor: 'rgba(255, 233, 160, 0.030)',
-    shadowColor: COLORS.goldLight,
-    shadowOpacity: 0.44,
+    backgroundColor: 'rgba(148, 128, 255, 0.034)',
+    shadowColor: '#B8B5FF',
+    shadowOpacity: 0.38,
     shadowRadius: 72,
     elevation: 10,
     zIndex: -1,
